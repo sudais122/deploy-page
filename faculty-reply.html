@@ -49,43 +49,5 @@
         <h2>Thank You!</h2>
         <p>Your resolution has been successfully submitted and the Admin has been notified.</p>
     </div>
-
-    <script>
-        // Get the Database ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const complaintDbId = urlParams.get('id');
-        
-        if (complaintDbId) {
-            document.getElementById('id-display').innerText = "Case ID: " + complaintDbId;
-        }
-
-        async function submitReply() {
-            const message = document.getElementById('faculty-reply').value.trim();
-            if (!message) { alert("Please type a message before submitting."); return; }
-
-            const btn = document.querySelector('.btn-submit');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-
-            try {
-                const response = await fetch(`http://localhost:3001/api/complaints/${complaintDbId}/faculty-reply`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ facultyReply: message })
-                });
-
-                if (response.ok) {
-                    document.getElementById('form-container').style.display = 'none';
-                    document.getElementById('success-msg').style.display = 'block';
-                } else {
-                    throw new Error('Failed to submit');
-                }
-            } catch (error) {
-                alert("Error: Could not connect to the server.");
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Resolution';
-            }
-        }
-    </script>
 </body>
 </html>
